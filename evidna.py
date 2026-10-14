@@ -1,5 +1,6 @@
 """Evidence-first sequence analysis. Run with uv run evidna.py --help."""
 import argparse
+from contextlib import contextmanager
 from datetime import datetime, timezone
 import hashlib
 import json
@@ -48,6 +49,8 @@ def analyze(path, variant):
         consequence = 'start-codon change; translation initiation is uncertain'
     elif index == len(cds)//3 - 1 and after != '*':
         consequence = 'stop lost; downstream sequence needed'
+    elif before == after == '*':
+        consequence = 'stop retained'
     elif before == after:
         consequence = 'synonymous'
     elif after == '*':
@@ -71,11 +74,15 @@ def analyze(path, variant):
     }
 
 
+@contextmanager
 def connect(path):
     db = sqlite3.connect(path)
-    db.execute('CREATE TABLE IF NOT EXISTS entries (id INTEGER PRIMARY KEY, created TEXT, kind TEXT, parent INTEGER REFERENCES entries(id), payload TEXT)')
-    db.execute('PRAGMA foreign_keys = ON')
-    return db
+    try:
+        db.execute('CREATE TABLE IF NOT EXISTS entries (id INTEGER PRIMARY KEY, created TEXT, kind TEXT, parent INTEGER REFERENCES entries(id), payload TEXT)')
+        db.execute('PRAGMA foreign_keys = ON')
+        yield db
+    finally:
+        db.close()
 
 
 def study():
@@ -175,6 +182,9 @@ def main():
     p.add_argument('--source', required=True, help='Evidence file path, accession, or URL')
     sub.add_parser('history')
     sub.add_parser('study', help='Reproduce the public HBB computational comparison; no AI calls')
+    p = sub.add_parser('research', help='Run a bounded public-data research queue; no AI calls')
+    p.add_argument('--minutes', type=float, default=15, help='Maximum runtime, 0–60 minutes; stops early when finished')
+    sub.add_parser('benchmark', help='Run the research queue and fail on fixed-baseline regressions')
     sub.add_parser('export-demo', help='Generate browser results with the Python engine')
     args = parser.parse_args()
     try:
@@ -195,6 +205,11 @@ def main():
             output = analyze(args.sequence, args.variant)
         elif args.command == 'study':
             output = study()
+        elif args.command in ('research', 'benchmark'):
+            from research import run
+            output = run(args.minutes if args.command == 'research' else 15)
+            if args.command == 'benchmark' and not output.get('benchmark_passed'):
+                parser.exit(1, json.dumps(output, indent=2) + '\n')
         elif args.command == 'export-demo':
             output = [analyze(DATA, v) for v in ('c.20A>T', 'c.20A>G', 'c.21G>A')]
             (ROOT / 'landing/results.json').write_text(json.dumps(output, indent=2) + '\n')

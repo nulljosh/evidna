@@ -87,3 +87,16 @@ The calculation compares unprocessed chains, including initiator methionine. It 
 For c.20A>T, calculated mass falls by 29.983 Da and estimated charge rises by 0.997190. The synonymous c.21G>A control leaves the protein sequence and both estimates unchanged. These results are consistent with the first AI proposal's arithmetic. They do not establish protein function. The complete reproducible output is in [examples/hbb-study.json](examples/hbb-study.json).
 
 Landing typography uses self-hosted DM Sans and Newsreader under their included SIL Open Font Licenses. [Design review and remaining QA limits](design/README.md).
+
+## Research loop and benchmarks
+
+```sh
+uv run evidna.py research --minutes 15
+uv run evidna.py benchmark
+```
+
+The foreground queue cross-checks the reference, scans every single-base CDS substitution, compares protein consequences with a pinned UniProt annotation snapshot, and evaluates a versioned regression baseline. It stops early when finished and makes no AI calls. A maximum runtime from greater than zero through 60 minutes is accepted; checks happen between scan items and stages, rather than forcibly killing a running operation.
+
+Each run saves JSON/JSONL files under ignored `runs/`, adds a summary to the local notebook, and updates the marked research section of the whitepaper. Ctrl-C saves an interrupted summary. Complete runs also update [benchmark history](benchmarks/history.jsonl). There is no timer service, daemon, cron job, or automatic Git push.
+
+The first three scored cycles agree: 1,332 substitutions, 256 protein annotations reproduced, two outside a single-base explanation, and three complex annotations excluded. Repetition measures reproducibility, not new biological evidence. [Benchmark definitions and limits](benchmarks/README.md).

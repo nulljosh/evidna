@@ -112,3 +112,47 @@ No evidence establishes that repeated AI revisions improve hypothesis quality.
 Next research: evaluate a small panel of independently documented variants, then
 compare predicted consequences with held-out observations using a fixed scoring rule.
 Do not treat database agreement or internal unit tests as that validation.
+
+<!-- research-loop:start -->
+## Latest bounded research run
+
+Status: complete. Updated 2026-10-14T04:10:42.572014+00:00.
+Input: NM_000518.5, SHA-256 `c114b998f526a13ce7029a484f7d2679de9bc9f50a533d6e86ce5e644ca6c5d9`.
+Scanned 1332 of 1,332 possible single-base coding substitutions.
+
+missense: 957.
+start-codon change; translation initiation is uncertain: 9.
+stop gained: 34.
+stop lost; downstream sequence needed: 7.
+stop retained: 2.
+synonymous: 323.
+
+UniProt protein annotations reproduced: 256.
+Not reproduced by a single-base substitution: 2.
+Excluded complex annotations: 3.
+
+These are sequence-level computational checks, not experiments on protein function.
+The queue makes zero model calls and stops when its finite work is complete.
+<!-- research-loop:end -->
+
+## The unmatched cases sharpen the question
+
+UniProt VAR_002941 records T51K. The reference codon is ACT; encoding lysine
+requires at least two coding-base changes from that codon. A single-base scan
+therefore cannot reproduce it. This is a computed scope limit, not a new finding.
+
+VAR_035240 records V68D, traditionally beta-globin residue 67, in Hb Bristol.
+[Rees and colleagues, 1996](https://pubmed.ncbi.nlm.nih.gov/8704193/) report a DNA
+change encoding methionine and evidence of subsequent conversion to aspartate.
+Translation alone cannot explain the final processed residue. The paper provides
+an established biological explanation for one apparent annotation mismatch.
+Evidna did not discover this mechanism or perform the cited experiments.
+
+## Benchmark progress
+
+`benchmarks/baseline.json` freezes input fingerprints and initial regression metrics.
+Nine known sequence cases pass. Three scored cycles reproduce identical counts.
+The median initial cycle is about 0.72 seconds on the development Mac.
+Timing is informational; shared CI runners do not gate on wall-clock speed.
+The public landing displays these results and preserves the unmatched cases.
+This is software and sequence-concordance evidence, not a hypothesis-quality score.

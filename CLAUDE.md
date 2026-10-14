@@ -7,3 +7,7 @@ Run `uv run python -m unittest discover -s tests -v`. Regenerate `landing/result
 Use pinned public data. Keep notebooks and secrets out of Git. Never present an AI proposal or user-reported observation as validated evidence. Do not add instrument execution without explicit scoped authorization and a reviewed hardware design.
 
 All current input positions are 1-based CDS coordinates, not genomic coordinates. Standard genetic code only. Keep initiator methionine numbering distinct from mature beta-globin numbering.
+
+## The loop
+
+Run `uv run evidna.py research --minutes 15` for the finite foreground queue. `uv run evidna.py benchmark` adds a nonzero exit on regressions. See `docs/LOOP-HANDOFF.md`. No automatic model calls, daemon, or Git pushes. Complete runs update benchmark history, landing findings data, and the marked whitepaper section; deploy explicitly to publish new findings.

@@ -26,7 +26,7 @@ class LabTests(unittest.TestCase):
         self.assertEqual(r['consequence'], 'missense')
 
     def test_consequences(self):
-        for variant, expected in [('c.21G>A', 'synonymous'), ('c.19G>T', 'stop gained'), ('c.1A>G', 'start-codon change'), ('c.442T>C', 'stop lost')]:
+        for variant, expected in [('c.21G>A', 'synonymous'), ('c.19G>T', 'stop gained'), ('c.1A>G', 'start-codon change'), ('c.442T>C', 'stop lost'), ('c.444A>G', 'stop retained')]:
             with self.subTest(variant=variant):
                 self.assertTrue(analyze(DATA, variant)['consequence'].startswith(expected))
 
