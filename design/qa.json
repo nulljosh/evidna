@@ -1,6 +1,7 @@
 {
   "reviewed": "2026-10-13",
-  "scope": "Mobile Lighthouse audit of local landing page; excludes performance",
+  "url": "https://evidna.jaybulb.com/",
+  "scope": "Public mobile Lighthouse audit; excludes performance",
   "categories": {
     "accessibility": 100,
     "best-practices": 100,

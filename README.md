@@ -4,7 +4,7 @@
 
 ![Version](https://img.shields.io/badge/version-0.1.0-9e4f36) ![License](https://img.shields.io/badge/license-MIT-53694b) ![Tests](https://github.com/nulljosh/evidna/actions/workflows/test.yml/badge.svg)
 
-[Explore the lab](https://evidna.heyitsmejosh.com)
+[Explore the lab](https://evidna.jaybulb.com)
 
 An open-source biology lab. Real DNA, reproducible analysis, and AI questions grounded in evidence.
 
